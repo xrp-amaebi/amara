@@ -27,11 +27,11 @@ export function Results({ entries, state, isSearch, setIsSearchCount }){
         )
     } else {
         return(
-            <div className={"container"}>
+            <Container>
                 {
                     entries.length > 0 && entries.map((items, key) => <EntryCard {...items } key={key}/>)
                 }
-            </div>
+            </Container>
         )
     }
 }
