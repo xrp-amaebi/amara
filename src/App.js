@@ -34,13 +34,15 @@ function App() {
   const [state, dispatch]  = useReducer(entryReducer, initialState)
 
   const inputRef = useRef(null)
-  const [isSearch, setIsSearch] = useState(false)
+  const [isSearch, setIsSearch] = useState(true)
 
 
   function onTextChange(){
     if (inputRef.current && inputRef.current.value) {
       setFilter(inputRef.current.value)
-   }
+      setIsSearch(false)
+    }
+    setIsSearch(true)
   }
 
   return (
