@@ -1,7 +1,7 @@
-import { useRef, useReducer } from 'react';
+import { useRef, useReducer, useState } from 'react';
 import { useEntriesContext } from './context/entries.context';
-import { EntryCard} from './components/EntryCard';
 import { Search } from './components/Search';
+import { Results } from './components/Results';
 
 import './App.css';
 
@@ -15,32 +15,32 @@ function App() {
 
   const initialState = { text: "" }
 
-  function reducer(state, action){
+  function entryReducer(state, action){
     switch(action.type){
       case actions.FILTER_TEXT: 
-        return { text: action.text }
+        return { ...state, text: action.payload.text }
       default:
-        throw new Error("what have you done")
+        throw new Error("something's not right")
       
       }
   }
 
   function setFilter(target){
-    dispatch(target)
+
+    dispatch({type: actions.FILTER_TEXT, payload: { text: target }})
+
   }
   
-  const [state, dispatch]  = useReducer(reducer, initialState)
+  const [state, dispatch]  = useReducer(entryReducer, initialState)
 
   const inputRef = useRef(null)
+  const [isSearch, setIsSearch] = useState(false)
+
 
   function onTextChange(){
-  //   if (inputRef.current && inputRef.current.value) {
-  //   return 
-  //  }
-
-  //   setFilter(inputRef.current.value)
-    console.log({ inputRef: inputRef.current.value })
-   
+    if (inputRef.current && inputRef.current.value) {
+      setFilter(inputRef.current.value)
+   }
   }
 
   return (
@@ -49,13 +49,14 @@ function App() {
         onTextChange={onTextChange}
         placeholder={"try to search by category"} 
         inputRef={inputRef} 
+        isSearch={isSearch}
+        setIsSearch={setIsSearch}
       />
 
-      <div className={"container"}>
-        {
-          next.length > 0 && next.map((items, key) => <EntryCard {...items } key={key}/>)
-        }
-      </div>
+      <Results 
+        entries={next} state={state}  
+        isSearch={isSearch}
+        setIsSearch={setIsSearch}/>
     </div>
   );
 }
