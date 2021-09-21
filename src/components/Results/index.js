@@ -1,7 +1,7 @@
 import { EntryCard } from "../EntryCard";
 import {  Container } from "./style"
 
-export function Results({ entries, state, isSearch }){
+export function Results({ entries, state, isSearch, setIsSearchCount }){
 
     function selectEntries(_entries, { text }) {
 
@@ -9,8 +9,9 @@ export function Results({ entries, state, isSearch }){
             return
         }
         
-        return _entries.filter(link => link ? link["Category"].toLowerCase().includes(text.toLowerCase()) : 'none');
-        
+        const saveCount = _entries.filter(link => link ? link["Category"].toLowerCase().includes(text.toLowerCase()) : 'none');
+        setIsSearchCount(saveCount.length)
+        return saveCount
     }
 
     if(isSearch){

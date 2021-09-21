@@ -35,6 +35,7 @@ function App() {
 
   const inputRef = useRef(null)
   const [isSearch, setIsSearch] = useState(true)
+  const [searchCount, setIsSearchCount] = useState(0)
 
 
   function onTextChange(){
@@ -53,12 +54,17 @@ function App() {
         inputRef={inputRef} 
         isSearch={isSearch}
         setIsSearch={setIsSearch}
+        searchCount={searchCount}
+        setIsSearchCount={setIsSearchCount}
       />
 
       <Results 
         entries={next} state={state}  
         isSearch={isSearch}
-        setIsSearch={setIsSearch}/>
+        setIsSearch={setIsSearch}
+        setIsSearchCount={setIsSearchCount}
+      />
+        
     </div>
   );
 }
