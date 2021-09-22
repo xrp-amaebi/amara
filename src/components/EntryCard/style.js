@@ -19,6 +19,6 @@ export const Wrapper = styled.div`
     border-radius: 3px;
     display: flex;
     margin-top: 10px;
-    padding: 10px;
+    padding: 8px;
   }
 `

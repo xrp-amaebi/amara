@@ -29,7 +29,7 @@ export function Results({ entries, state, isSearch, setIsSearchCount }){
         return(
             <Container>
                 {
-                    entries.length > 0 && entries.map((items, key) => <EntryCard {...items } key={key}/>)
+                    entries.length > 0 && entries.map((items, key) => <EntryCard {...items } key={key} />)
                 }
             </Container>
         )
