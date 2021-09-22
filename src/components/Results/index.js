@@ -19,7 +19,7 @@ export function Results({ entries, state, isSearch, setIsSearchCount }){
             <Container>
                 {
                     selectEntries.length === 0 || state.text === '' ?
-                    <p></p>
+                    <div>{"No Results found ?... Try and Search via Category (Anime, Animals, Arts & Design)..."}</div>
                 :
                     selectEntries(entries, state).map((link, key) => <EntryCard key={key} {...link} />)
                 }

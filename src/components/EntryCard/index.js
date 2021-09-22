@@ -2,6 +2,7 @@ import { Wrapper } from "./style"
 
 export function EntryCard({ API, Cors, HTTPS, Category, Auth, Description, Link }){
     const none = "none"
+    
     return(
         <Wrapper>
             <div><span>{"API "}</span> {API}</div>

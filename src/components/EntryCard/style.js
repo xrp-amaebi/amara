@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
   background-color: white;
@@ -10,14 +11,14 @@ export const Wrapper = styled.div`
   margin: 10px;
   font-family: monospace;
 
-  div{
-    min-width: 60px;
+  div {
+    min-height: 30px;
     align-items: center;
-    justify-items: center;
+    justify-content: space-between;
     border: 1px solid grey;
     border-radius: 3px;
     display: flex;
-    flex-direction: column;
-    maargin-right: 10px;
+    margin-top: 10px;
+    padding: 10px;
   }
 `

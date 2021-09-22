@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   const { entries:_entries } = useEntriesContext()
-  const { entries: next } = _entries
+  const { entries: next, count } = _entries
 
   const actions = {
     FILTER_TEXT: "SET_FILTER"
@@ -50,12 +50,13 @@ function App() {
     <div className="App">
       <Search 
         onTextChange={onTextChange}
-        placeholder={"try to search by category"} 
+        placeholder={"try to search by category (e.g Animals, Anime, Arts & Design)"} 
         inputRef={inputRef} 
         isSearch={isSearch}
         setIsSearch={setIsSearch}
         searchCount={searchCount}
         setIsSearchCount={setIsSearchCount}
+        totalCount={count}
       />
 
       <Results 
