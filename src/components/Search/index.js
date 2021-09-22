@@ -7,7 +7,10 @@ export function Search({ placeholder, inputRef, onTextChange, searchCount, total
         <EntrySearch>
             <Input placeholder={placeholder} ref={inputRef} onChange={onTextChange} />
 
-            <div><span> TotalItems: {total} </span> <br/><span>Search Results: </span>{searchCount}</div>
+            <div>
+                <span>TotalItems: {total} </span><br/>
+                <span>Search Results: </span>{searchCount}
+            </div>
         </EntrySearch>
     )
 }

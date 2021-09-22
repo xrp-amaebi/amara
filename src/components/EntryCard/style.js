@@ -10,15 +10,42 @@ export const Wrapper = styled.div`
   border: 1px solid grey;
   margin: 10px;
   font-family: monospace;
+`
 
-  div {
-    min-height: 30px;
-    align-items: center;
+export const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  padding: 12px;
+  // border: 1px solid grey;
+  font-family: monospace;
+
+  div{
+    margin: 0;
+    padding-top: 12px;
+    border-bottom: 1px solid grey;
+    display: ${({ show }) => show ? "none" : "flex"};
     justify-content: space-between;
-    border: 1px solid grey;
-    border-radius: 3px;
-    display: flex;
-    margin-top: 10px;
-    padding: 8px;
   }
 `
+
+export const Sub = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  padding: 12px;
+  // border: 1px solid grey;
+  font-family: monospace;
+
+  div {
+    margin: 0;
+    padding-top: 12px;
+    border-bottom: 1px solid grey;
+    display: ${({ show }) => show ? "flex" : " none"};
+    justify-content: space-between;
+  }
+
+`
+

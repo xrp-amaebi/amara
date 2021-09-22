@@ -1,36 +1,33 @@
+import { useState } from "react";
 import { EntryCard } from "../EntryCard";
-import {  Container } from "./style"
+import { Container, ShowLess, Content } from "./style"
 
-export function Results({ entries, state, isSearch, setIsSearchCount }){
+export function Results({ entries, isSearch }){
+    const [show, setShow] = useState(true)
 
-    function selectEntries(_entries, { text }) {
-
-        if(!entries){
-            return
-        }
-        
-        const saveCount = _entries.filter(link => link ? link["Category"].toLowerCase().includes(text.toLowerCase()) : 'none');
-        setIsSearchCount(saveCount.length)
-        return saveCount
+    function onSetShow() {
+        setShow(!(show))
     }
 
-    if(isSearch){
+    if(!isSearch){
         return(
             <Container>
                 {
-                    selectEntries.length === 0 || state.text === '' ?
-                    <div>{"No Results found ?... Try and Search via Category (Anime, Animals, Arts & Design)..."}</div>
-                :
-                    selectEntries(entries, state).map((link, key) => <EntryCard key={key} {...link} />)
+                    <div>
+                        <span style={{ fontSize: "small" }}>{"No Results found"}</span> <br /> 
+                        <span style={{ fontSize: "x-small" }}>{"check your internet connection..."}</span>
+                    </div>
                 }
+               
             </Container>
         )
     } else {
         return(
             <Container>
-                {
-                    entries.length > 0 && entries.map((items, key) => <EntryCard {...items } key={key} />)
-                }
+                <ShowLess onClick={onSetShow}>{!show ? "show more" : "show less"}</ShowLess>
+                <Content>
+                    {entries.map((link, key) => <EntryCard key={key} {...link} show={show} />)}
+                </Content>
             </Container>
         )
     }
