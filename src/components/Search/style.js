@@ -12,7 +12,7 @@ export const EntrySearch = styled.div`
 export const Input = styled.input`
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 100%;
+    width: 80%;
     padding: 10px;
     border: 1px solid #4c8bf5;
     border-radius: 5px;
