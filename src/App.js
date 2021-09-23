@@ -1,9 +1,9 @@
 import { useRef, useReducer, useState } from 'react';
 import { useEntriesContext } from './context/entries.context';
-import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { Search } from './components/Search';
 import { Results } from './components/Results';
-import { searchCriterion } from './utils/data.placeholders'
+import { Socials } from "./components/Socials";
+import { searchCriterion } from './utils/data.placeholders';
 
 import './App.css';
 
@@ -24,8 +24,8 @@ function App() {
         return { ...state, text: action.payload.text }
       default:
         throw new Error("something's not right")
-      
-      }
+      ;
+    }
   }
 
   function setFilter(target){
@@ -45,7 +45,7 @@ function App() {
 
 
   function selectEntries(_entries, { text }) {
-    const saveCount = _entries.filter(link => link ? link[searchFilter].toLowerCase().includes(text.toLowerCase()) : 'none');
+    const saveCount = _entries.filter(link => link && link[searchFilter].toLowerCase().includes(text.toLowerCase()));
     setIsSearchCount(saveCount.length)
     setFilteredEntries(saveCount)
     return saveCount
@@ -76,6 +76,7 @@ function App() {
         inputRef={inputRef} 
         isSearch={isSearch}
         setSearchFilter={setSearchFilter}
+        searchFilter={searchFilter}
         setIsSearch={setIsSearch}
         searchCount={searchCount}
         setIsSearchCount={setIsSearchCount}
@@ -91,10 +92,7 @@ function App() {
         selectEntries={selectEntries}
       />
 
-      <div style={{ display: "flex", cursor: "pointer", justifyContent: "space-around", borderTop: "1px solid #4c8bf5", padding: "12px"}}>
-        <a href="https://github.com/xrp-amaebi/amara" target="_blank" title="xrp-amaebi"><FaGithub color="#4c8bf5"/></a>
-        <a href="https://www.linkedin.com/in/amaebi-amara-938975200" target="_blank" title="Amaebi Amara"><FaLinkedin color="#4c8bf5"/></a>
-      </div>
+      <Socials />
     </div>
   );
 }

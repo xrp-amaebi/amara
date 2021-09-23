@@ -62,11 +62,11 @@ export const Input = styled.input`
 
 export const FilterButton = styled.button`
     display: flex;
-    padding: 8px;
-    color: #4c8bf5;
-    background: none;
+    padding: 12px;
+    color: ${({ _active }) => _active ? "white" : "#4c8bf5"};
+    background: ${({ _active }) => _active ? "#4c8bf5" : "none"};
     border: 1px solid #4c8bf5;
-    height: 38px;
+    height: 20px;
     align-self: center;
     font-size: x-small;
     letter-spacing: 1px;

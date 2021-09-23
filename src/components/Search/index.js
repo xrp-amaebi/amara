@@ -1,9 +1,8 @@
-
 import { EntrySearch, Input, InputWrapper, FilterButton } from "./style"
-import { FaGithub, FaSearch } from 'react-icons/fa'
+import { FaSearch } from 'react-icons/fa';
 import { searchCriterion } from "../../utils/data.placeholders"
 
-export function Search({ placeholder, inputRef, onTextChange, searchCount, totalCount, setSearchFilter, checkEntries }){
+export function Search({ placeholder, inputRef, onTextChange, searchCount, totalCount, searchFilter, setSearchFilter, checkEntries }){
     const total = !totalCount ? "N/A" : totalCount
     const _search = !searchCount ? "N/A" : searchCount
 
@@ -12,11 +11,10 @@ export function Search({ placeholder, inputRef, onTextChange, searchCount, total
     }
 
     function onFilter(){
-
         return(
             <div style={{ display: "flex" }}>
-                {Object.keys(searchCriterion).map((item, key) => <FilterButton key={key} onClick={() => setSearchFilter(item)}>{item}</FilterButton>)}
-            </ div>
+                {Object.keys(searchCriterion).map((item, key) => <FilterButton _active={searchFilter === item ? true : false} key={key} onClick={() => setSearchFilter(item)}>{item}</FilterButton>)}
+            </div>
         )
     }
 
