@@ -89,7 +89,6 @@ function App() {
         selectEntries={selectEntries}
         // setShow={onSetShow}
       />
-        
     </div>
   );
 }
