@@ -10,6 +10,7 @@ export const EntrySearch = styled.div`
         font-size: small;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         color: #4c8bf5;
         padding: 12px;
     }
@@ -56,5 +57,28 @@ export const Input = styled.input`
     :focus{
         outline: 1px solid #4c8bf5;
         border-radius: 2px;
+    }
+`
+
+export const FilterButton = styled.button`
+    display: flex;
+    padding: 8px;
+    color: #4c8bf5;
+    background: none;
+    border: 1px solid #4c8bf5;
+    height: 38px;
+    align-self: center;
+    font-size: x-small;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: .4s ease-in-out;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: 10px;
+
+    :hover{
+        color: white;
+        background: #4c8bf5;
     }
 `

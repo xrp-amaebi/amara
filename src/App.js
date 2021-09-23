@@ -1,5 +1,6 @@
 import { useRef, useReducer, useState } from 'react';
 import { useEntriesContext } from './context/entries.context';
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { Search } from './components/Search';
 import { Results } from './components/Results';
 import { searchCriterion } from './utils/data.placeholders'
@@ -89,6 +90,11 @@ function App() {
         setIsSearch={setIsSearch}
         selectEntries={selectEntries}
       />
+
+      <div style={{ display: "flex", cursor: "pointer", justifyContent: "space-around", borderTop: "1px solid #4c8bf5", padding: "12px"}}>
+        <a href="https://github.com/xrp-amaebi/amara" target="_blank" title="xrp-amaebi"><FaGithub color="#4c8bf5"/></a>
+        <a href="https://www.linkedin.com/in/amaebi-amara-938975200" target="_blank" title="Amaebi Amara"><FaLinkedin color="#4c8bf5"/></a>
+      </div>
     </div>
   );
 }
