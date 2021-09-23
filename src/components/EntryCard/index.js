@@ -23,7 +23,7 @@ export function EntryCard({ API, Cors, HTTPS, Category, Auth, Description, Link 
                     <div><span>{"Category "}</span>{Category}</div>
                     <div><span>{"Cors "}</span>{Cors}</div>
                     <div><span>{"HTTPS"}</span>{HTTPS}</div>
-                    <div><span>{"Link "}</span><a target="_blank" href={Link}>{Link}</a></div>
+                    <div><span>{"Link "}</span><a target="_blank" rel="noreferrer" href={Link}>{Link}</a></div>
                 </Sub>
                 <ShowLess onClick={onSetShow}>{!show ? "show more" : "show less"}</ShowLess>
 

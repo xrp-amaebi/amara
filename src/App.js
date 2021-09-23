@@ -2,6 +2,7 @@ import { useRef, useReducer, useState } from 'react';
 import { useEntriesContext } from './context/entries.context';
 import { Search } from './components/Search';
 import { Results } from './components/Results';
+import { searchCriterion } from './utils/data.placeholders'
 
 import './App.css';
 
@@ -39,10 +40,11 @@ function App() {
 
   const [searchCount, setIsSearchCount] = useState(0)
   const [filteredEntries, setFilteredEntries] = useState([])
+  const [searchFilter, setSearchFilter] = useState("Category")
 
 
   function selectEntries(_entries, { text }) {
-    const saveCount = _entries.filter(link => link ? link["Category"].toLowerCase().includes(text.toLowerCase()) : 'none');
+    const saveCount = _entries.filter(link => link ? link[searchFilter].toLowerCase().includes(text.toLowerCase()) : 'none');
     setIsSearchCount(saveCount.length)
     setFilteredEntries(saveCount)
     return saveCount
@@ -55,30 +57,29 @@ function App() {
       setIsSearch(true)
       return
     }
-
-    console.log({ count })
   }
 
   function onTextChange(){
     if(inputRef.current && inputRef.current.value) {
       setFilter(inputRef.current.value)
-
-      checkEntries()
       return
     }
   }
+
 
   return (
     <div className="App">
       <Search 
         onTextChange={onTextChange}
-        placeholder={"try to search by category (e.g Animals, Anime, Arts & Design, Security, Authentication)"} 
+        placeholder={searchCriterion[searchFilter]}
         inputRef={inputRef} 
         isSearch={isSearch}
+        setSearchFilter={setSearchFilter}
         setIsSearch={setIsSearch}
         searchCount={searchCount}
         setIsSearchCount={setIsSearchCount}
         totalCount={count}
+        checkEntries={checkEntries}
       />
 
       <Results 
@@ -87,7 +88,6 @@ function App() {
         isSearch={isSearch}
         setIsSearch={setIsSearch}
         selectEntries={selectEntries}
-        // setShow={onSetShow}
       />
     </div>
   );
