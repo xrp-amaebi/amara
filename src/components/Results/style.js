@@ -15,6 +15,7 @@ export const InfoWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #4c8bf5;
 
 `;
 

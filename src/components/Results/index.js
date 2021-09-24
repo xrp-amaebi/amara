@@ -41,7 +41,6 @@ export function Results({ entries, isSearch }){
                         <InfoWrapper>
                             <span style={{ fontSize: "x-small" }}>{"No Results found ?"}</span><br /> 
                             <span style={{ fontSize: "xx-small" }}>{"Search or check your internet connection"}{renderDots()}</span>
-
                         </InfoWrapper>
                     }
                 </Container>

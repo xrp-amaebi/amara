@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  background-color: white;
+  background-color: black;
   padding: 12px;
   border: 1px solid #4c8bf5;
   margin: 10px;
@@ -16,7 +16,8 @@ export const Main = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: white;
+  background-color: black;
+  color: #4c8bf5;
   padding: 12px;
   // border: 1px solid grey;
   font-family: monospace;
@@ -34,7 +35,8 @@ export const Sub = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: white;
+  background-color: black;
+  color: #4c8bf5;
   padding: 12px;
   // border: 1px solid grey;
   font-family: monospace;

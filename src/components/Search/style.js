@@ -6,7 +6,17 @@ export const EntrySearch = styled.div`
     font-family: Arial;
 
     div:nth-child(2){
-        font-family: Arial;
+        font-size: small;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: #4c8bf5;
+        padding: 12px;
+
+
+    }
+
+    div:nth-child(3){
         font-size: small;
         display: flex;
         justify-content: space-between;
@@ -15,7 +25,18 @@ export const EntrySearch = styled.div`
         padding: 12px;
     }
 `
+export const InfoSpan = styled.span`
+    color: #4c8bf5; 
+    border: 1px solid #4c8bf5;
+    padding: 7px;
+    border-radius: 20px; 
+    margin-left: 6px;
 
+    :hover{
+        background-color: #4c8bf5;
+        color: white;
+    }
+`
 export const InputWrapper = styled.div`
     padding: 10px;
     display: flex;

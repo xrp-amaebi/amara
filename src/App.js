@@ -60,9 +60,18 @@ function App() {
     }
   }
 
+  const [query, setQuery] = useState([])
   function onTextChange(){
     if(inputRef.current && inputRef.current.value) {
       setFilter(inputRef.current.value)
+
+      if(count){
+        const _QUERY = next.filter(link => link && link[searchFilter].toLowerCase().includes(state.text.toLowerCase()));
+        setQuery(_QUERY)
+        return
+      }
+
+      
       return
     }
   }
@@ -82,6 +91,8 @@ function App() {
         setIsSearchCount={setIsSearchCount}
         totalCount={count}
         checkEntries={checkEntries}
+        queryText={query}
+        setFilter={setFilter}
       />
 
       <Results 
