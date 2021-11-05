@@ -8,9 +8,7 @@ import { searchCriterion } from './utils/data.placeholders';
 import './App.css';
 
 function App() {
-  const { entries:_entries } = useEntriesContext()
-  const { entries: next, count } = _entries
-
+  const { items, count } = useEntriesContext()
 
   const actions = {
     FILTER_TEXT: "SET_FILTER"
@@ -18,7 +16,7 @@ function App() {
 
   const initialState = { text: "" }
 
-  function entryReducer(state, action){
+  function entryReducer(state, action) {
     switch(action.type){
       case actions.FILTER_TEXT: 
         return { ...state, text: action.payload.text }
@@ -41,8 +39,10 @@ function App() {
 
   const [searchCount, setIsSearchCount] = useState(0)
   const [filteredEntries, setFilteredEntries] = useState([])
-  const [searchFilter, setSearchFilter] = useState("Category")
+  const [searchFilter, setSearchFilter] = useState("name")
 
+  
+  const [pageNumber, setPageNumber] =  useState(1)
 
   function selectEntries(_entries, { text }) {
     const saveCount = _entries.filter(link => link && link[searchFilter].toLowerCase().includes(text.toLowerCase()));
@@ -53,8 +53,8 @@ function App() {
 
 
   function checkEntries() {
-    if(count) {
-      selectEntries(next, state)
+    if(count > 0) {
+      selectEntries(items, state)
       setIsSearch(true)
       return
     }
@@ -66,12 +66,11 @@ function App() {
       setFilter(inputRef.current.value)
 
       if(count){
-        const _QUERY = next.filter(link => link && link[searchFilter].toLowerCase().includes(state.text.toLowerCase()));
+        const _QUERY = items.filter(link => link && link[searchFilter].toLowerCase().includes(state.text.toLowerCase()));
         setQuery(_QUERY)
         return
       }
 
-      
       return
     }
   }
@@ -79,30 +78,38 @@ function App() {
 
   return (
     <div className="App">
-      <Search 
-        onTextChange={onTextChange}
-        placeholder={searchCriterion[searchFilter]}
-        inputRef={inputRef} 
-        isSearch={isSearch}
-        setSearchFilter={setSearchFilter}
-        searchFilter={searchFilter}
-        setIsSearch={setIsSearch}
-        searchCount={searchCount}
-        setIsSearchCount={setIsSearchCount}
-        totalCount={count}
-        checkEntries={checkEntries}
-        queryText={query}
-        setFilter={setFilter}
-      />
+      <div>
+        <Search
+          onTextChange={onTextChange}
+          placeholder={searchCriterion[searchFilter]}
+          inputRef={inputRef} 
+          isSearch={isSearch}
+          setSearchFilter={setSearchFilter}
+          searchFilter={searchFilter}
+          setIsSearch={setIsSearch}
+          searchCount={searchCount}
+          setIsSearchCount={setIsSearchCount}
+          totalCount={count}
+          checkEntries={checkEntries}
+          queryText={query}
+          setFilter={setFilter}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
+      </div>
+      
 
-      <Results 
-        entries={filteredEntries} 
+      <Results
+        entries={filteredEntries}
+        items={items}
+        count={count}
         state={state}  
         isSearch={isSearch}
         setIsSearch={setIsSearch}
         selectEntries={selectEntries}
+        pageNumber={pageNumber}
+        setPageNumber={setPageNumber}
       />
-
       <Socials />
     </div>
   );

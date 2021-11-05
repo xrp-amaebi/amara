@@ -1,20 +1,14 @@
-import { useState } from "react";
-import { EntryCard } from "../EntryCard";
-import { Container, InfoWrapper, Content } from "./style"
-import ReactPaginate from "react-paginate"
+import {  useState } from "react";
+import { Container, InfoWrapper, Content, Table } from "./style"
 
-export function Results({ entries, isSearch }){
-    const [pageNumber, setPageNumber] =  useState(0)
+export function Results({ entries, items, isSearch, count, pageNumber, setPageNumber }){
 
-    let limit = 10
-    const pageCount = Math.ceil(entries.length / limit)
-    let _pagePosition = pageNumber * limit
-
+    let defaults = []
     const [dot, setDot] = useState("")
+
     function renderDots(){
         const count = dot.length
         let extra = dot + "."
-        // console.log({ count, extra })
         setTimeout(() => {
             if(count === 3){
                 extra = "."
@@ -29,12 +23,47 @@ export function Results({ entries, isSearch }){
         )
     }
 
-    function pageChange({ selected }){
-        setPageNumber(selected)
-    }   
+    let titleBars = {}
+
+    items.length > 0 && items[0].column_values.map((itemProps, key) => {
+        const { value, title } = itemProps
+
+        defaults.push({
+            value, title
+        })
+
+        items[0].column_values.map((subProps, index) => {
+
+            const { value: subValue, title: subTitle } = subProps
+
+            titleBars[subTitle] = JSON.parse(subValue)
+
+            return {}
+        })
+
+        return null
+    })
+    
+
+    // function renderNameCard({ name, column_values }, key){
+    //     return <NameCard key={key} name={name} column_values={column_values} count={count} defaults={Object.keys(titleBars)} keyX={key}/> 
+    // }
+
+    function renderTableFunction({ link, key }){
+        const { column_values, name } = link
+
+        return (
+        <tr style={{ height:"20px" }} key={key}>
+            <td>{name}</td>
+            {
+                column_values && column_values.map((column, key) => <td key={key} style={{ width: "10%" }}>{"null"}</td>)
+            }
+        </tr>
+    )}
+
 
     function renderResults(){
-        if(!isSearch){
+        if(count === 0){
             return(
                 <Container>
                     {
@@ -49,24 +78,30 @@ export function Results({ entries, isSearch }){
             return(
                 <Container>
                     <Content>
-                        {entries.slice(_pagePosition, _pagePosition + limit).map((link, key) => <EntryCard key={key} {...link} />)}
-                        <ReactPaginate
-                            previousLabel={"Previous"}
-                            nextLabel={"Next"}
-                            pageCount={pageCount}
-                            onPageChange={pageChange}
-                            containerClassName={"currentLink"}
-                            previousLinkClassname={"previousLink"}
-                            nextLinkClassName={"nextLink"}
-                            disabledClassName={"paginateDisabled"}
-                            activeClassName={"paginateActive"}
-                        />
-                    </Content>
+                        {
+                            <Table styles={{ colors: "white" }}>
+                                <thead>
+                                    <tr>
+                                        <th style={{ minWidth: "40px" }}>{"Name"}</th >
+                                        {Object.keys(titleBars).map((head, index) => <th key={index}>{head}</th>) }             
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        entries && isSearch ? 
+                                            entries && entries.map((link, index) => renderTableFunction({ link, key: index})) 
+                                        : 
+                                            items && items.map((link, index) => renderTableFunction({ link, key: index }))
+                                    }
+                                </tbody>
+                            </Table>  
+                        }
+                    </Content> 
                 </Container>
             )
         }
     }
-
+    
     return(
         <>
             {renderResults()}
@@ -74,3 +109,48 @@ export function Results({ entries, isSearch }){
     )
     
 }
+
+// Pagination
+// const lastQueryElement = useCallback(node => {
+//     if(loading) return
+//     if(queryRef.current) queryRef.current.disconnect()
+//     queryRef.current = new IntersectionObserver(watchables => {
+//         if(watchables[0].isIntersecting){
+//             console.log("visible", { watchables })
+//             setPageNumber(prev => prev + 1)
+//         }
+//     })
+//     if(node) queryRef.current.observe(node)
+
+// }, [loading])
+
+
+// let limit = 10
+//     const pageCount = entries && isSearch ? Math.ceil(entries.length / limit) : Math.ceil(items.length / limit)
+//     let _pagePosition = pageNumber * limit
+
+// function pageChange({ selected }){
+//     setPageNumber(selected)
+// }
+
+/* {entries && entries.slice(_pagePosition, _pagePosition + limit).map((link, key) => <EntryCard key={key} {...link} />)} 
+    {
+        entries && isSearch ? 
+            entries.slice(_pagePosition, _pagePosition + limit).map((link, key) => <NameCard key={key} {...link} />)
+        : 
+            items.slice(_pagePosition, _pagePosition + limit).map((link, key) => <NameCard key={key} {...link} />)
+    }
+    <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        pageCount={pageCount}
+        onPageChange={pageChange}
+        containerClassName={"currentLink"}
+        previousLinkClassname={"previousLink"}
+        nextLinkClassName={"nextLink"}
+        disabledClassName={"paginateDisabled"}
+        activeClassName={"paginateActive"}
+    /> 
+*/
+
+                        

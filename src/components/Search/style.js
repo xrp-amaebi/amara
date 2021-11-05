@@ -4,16 +4,16 @@ export const EntrySearch = styled.div`
     display: flex;
     flex-direction: column;
     font-family: Arial;
+    max-width: 100%;
 
     div:nth-child(2){
+        width: 100%;
         font-size: small;
         display: flex;
         justify-content: space-around;
         align-items: center;
         color: #4c8bf5;
         padding: 12px;
-
-
     }
 
     div:nth-child(3){
@@ -25,7 +25,7 @@ export const EntrySearch = styled.div`
         padding: 12px;
     }
 `
-export const InfoSpan = styled.span`
+export const InfoSpan = styled.div`
     color: #4c8bf5; 
     border: 1px solid #4c8bf5;
     padding: 7px;
@@ -40,47 +40,45 @@ export const InfoSpan = styled.span`
 export const InputWrapper = styled.div`
     padding: 10px;
     display: flex;
-    width: 90%;
+    justify-content: center;
+    align-items: center;
 
     button {
         display: flex;
-        padding: 10px;
-        color: #4c8bf5;
-        background: none;
+        color: rgba(76, 139, 245, .5);
+        background: rgba(76, 139, 245, .2);
         border: 1px solid #4c8bf5;
-        height: 38px;
+        border-left: none;
+        height: 28px;
         align-self: center;
         font-size: x-small;
         letter-spacing: 1px;
         cursor: pointer;
-        border-radius: 2px;
         transition: .4s ease-in-out;
         align-items: center;
         justify-content: space-around;
-        margin-left: 10px;
 
-        :hover{
+        :hover {
             color: white;
-            background: #4c8bf5;
         }
     }
     
 `
-
 export const Input = styled.input`
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 80%;
-    padding: 10px;
+    position: relative;
+    width: 35%;
+    padding: 5px;
     border: 1px solid #4c8bf5;
-    border-radius: 2px;
+    border-right: none;
+    background: rgba(76, 139, 245, .2);
+    color: rgba(76, 139, 245, .4);
 
-    :focus{
+    :focus {
         outline: 1px solid #4c8bf5;
-        border-radius: 2px;
+        border: none;
+        padding: 5px;
     }
 `
-
 export const FilterButton = styled.button`
     display: flex;
     padding: 12px;

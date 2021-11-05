@@ -23,8 +23,9 @@ export const Content = styled.div`
   padding: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  overflow-x: scroll;
+  align-items: flex-start;
+  // border: 1px solid #4c8bf5;
 
   .currentLink {
     // width: 80%;
@@ -62,3 +63,42 @@ export const Content = styled.div`
   }
 
 `;
+
+export const THeader = styled.section`
+  color: green;
+  span {
+    color: blue;
+    border: 1px solid green;
+  }
+`
+export const TContent = styled.section`
+  width: 150px;
+  height: 50px;
+  color: white;
+`
+
+export const Table = styled.table`
+  font-family: monospace;
+  color: white;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: "10px";
+
+  td, th {
+    // border: 1px solid #dddddd;
+    border: 3px solid #4c8bf5;
+    text-align: center;
+    padding: 12px;
+    margin: 10px;
+  }
+
+  th {
+    font-size: 12px;
+    padding: 0px;
+    // max-width: 150px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: rgba(76, 139, 245, .2);
+  }
+`
