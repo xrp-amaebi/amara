@@ -24,8 +24,34 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
+  overflow-y: scroll;
   align-items: flex-start;
+  // transform: rotateX(180deg);
   // border: 1px solid #4c8bf5;
+
+  ::-webkit-scrollbar{
+    width: 12px;
+    height: 13px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(76, 139, 245, .2);
+    outline: 1px solid #4c8bf5;
+  }
+
+  ::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background: rgba(76, 139, 245, .6);
+
+    :hover{
+      background: rgba(255, 255, 255, 1);
+    }
+  }
+
+  ::-webkit-scrollbar-resizer{
+    background: none;
+  }
 
   .currentLink {
     // width: 80%;

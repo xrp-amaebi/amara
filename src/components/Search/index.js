@@ -1,11 +1,31 @@
-
+import { useState } from 'react'
 import { EntrySearch, Input, InputWrapper, FilterButton } from "./style"
 import { FaSearch } from 'react-icons/fa'
 import { searchCriterion } from "../../utils/data.placeholders"
 
 export function Search({ placeholder, inputRef, onTextChange, searchCount, totalCount, searchFilter, setSearchFilter, checkEntries, queryText, setFilter, setPageNumber }){
-    const total = !totalCount ? "N/A" : totalCount
-    const _search = !searchCount ? "N/A" : searchCount
+    const [dot, setDot] = useState("")
+
+    const total = !totalCount ? `Loading${renderDots()}`: totalCount
+    const _search = !searchCount ? `Loading${renderDots()}` : searchCount
+
+
+    function renderDots(){
+        const count = dot.length
+        let extra = dot + "."
+        setTimeout(() => {
+            if(count === 3){
+                extra = "."
+                setDot(extra)
+                return
+            }
+            setDot(extra)
+        }, 1000)
+
+        return(
+            dot
+        )
+    }
 
     function handleSearch(){
         checkEntries()

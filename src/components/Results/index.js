@@ -56,7 +56,18 @@ export function Results({ entries, items, isSearch, count, pageNumber, setPageNu
         <tr style={{ height:"20px" }} key={key}>
             <td>{name}</td>
             {
-                column_values && column_values.map((column, key) => <td key={key} style={{ width: "10%" }}>{"null"}</td>)
+                column_values && column_values.map((column, key) => {
+
+                    let result = (typeof(JSON.parse(column.value)) === "object") ? 
+                        column.value == null ? 
+                            "null" 
+                        : 
+                            "object values"
+                    :
+                        String(JSON.parse(column.value))
+
+                    return <td key={key} style={{ width: "10%" }}>{result}</td>
+                })
             }
         </tr>
     )}
@@ -69,7 +80,7 @@ export function Results({ entries, items, isSearch, count, pageNumber, setPageNu
                     {
                         <InfoWrapper>
                             <span style={{ fontSize: "x-small" }}>{"No Results found ?"}</span><br /> 
-                            <span style={{ fontSize: "xx-small" }}>{"Search or check your internet connection"}{renderDots()}</span>
+                            <span style={{ fontSize: "xx-small" }}>{"Search or check your internet connection"}</span>
                         </InfoWrapper>
                     }
                 </Container>
@@ -101,7 +112,7 @@ export function Results({ entries, items, isSearch, count, pageNumber, setPageNu
             )
         }
     }
-    
+
     return(
         <>
             {renderResults()}

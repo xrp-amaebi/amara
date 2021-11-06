@@ -8,7 +8,7 @@ const _ENDPOINT = "https://api.monday.com/v2"
 
 // let query = '{boards(ids: 1832485672) { name id description items { name column_values{title id type text } } } }';
 // let query = '{boards(ids: 1832485672) { items{ name } views { id name type  } }}';
-let query = '{boards(ids: 1832485672) { items(limit: 3){ name  column_values{ id text title type value } } }}';
+let query = '{boards(ids: 1832485672) { items(limit: 100){ name  column_values{ id text title type value } } }}';
 
 function EntriesContextProvider({ children }) {
     const [entries, setEntries] = useState([])
