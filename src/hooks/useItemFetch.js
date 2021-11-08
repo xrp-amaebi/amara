@@ -10,12 +10,13 @@ export default function useItemFetch(page){
     const [error, setError] = useState(false)
 
     useEffect(() => {
-        fetchItemCount({ setFetchCount })
-    }, [])
+        fetchData({ page, setItems, setLoading, setError })
+        return () => console.log("console cleared!")
+    }, [page])
 
     useEffect(() => {
-        fetchData({ page, setItems, setLoading, setError })
-    }, [fetchCount, page])
+        fetchItemCount({ setFetchCount })
+    }, [])
 
     // console.log({ fetchCount })
     return { items, count: items.length, fetchCount, loading, error }

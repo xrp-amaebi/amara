@@ -4,16 +4,17 @@ import { Container, InfoWrapper, Content, Table } from "./style"
 
 export function Results({ entries, items=[], isSearch, count, setPageNumber, loading, error }){
     const [dot, setDot] = useState("")
-    let defaults = []
+    // let defaults = []
     let titleBars = {}
 
     items.length > 0 && items[0].column_values.map((itemProps, key) => {
-        const { value, title } = itemProps
+        const { value, title, type  } = itemProps
 
-        defaults.push({
-            value, 
-            title
-        })
+        // defaults.push({
+        //     value, 
+        //     title, 
+        //     type
+        // })
 
         items[0].column_values.map((subProps, index) => {
 
@@ -30,7 +31,7 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
 
     const observer = useRef()
     const lastQueryElement = useCallback(node => {
-        if(loading) return
+        if(loading | isSearch) return
         if(observer.current) observer.current.disconnect()
         observer.current = new IntersectionObserver(watchables => {
             const [instance] = watchables
@@ -40,12 +41,12 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
             }
         })
         if(node) observer.current.observe(node)
-    }, [setPageNumber, loading])
+    }, [setPageNumber, loading, isSearch])
 
     function renderTableFunction({ link, key, size }){
         const { column_values, name } = link
         return (
-            (size === key+1 ) ?
+            (size === key+1) ?
                 <tr style={{ height:"20px" }} key={key} ref={lastQueryElement}>
 
                     <td>{name}</td>
@@ -79,13 +80,17 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
                             column.value == null ? 
                                 "null" 
                             : 
-                                "object values"
+                                column.type === 'file' ? "files" : "object values"
                         :
                             String(JSON.parse(column.value))
                         ;
 
-                        
-                        return <td key={key} style={{ width: "10%" }}>{result}</td>     
+                        if(result === "files") {
+                            const [file] = JSON.parse(column.value)["files"]
+                            return file.isImage && <td key={key} style={{ width: "10%" }}><img  alt={file.name} src={file.assetId} /></td> 
+                        }  else {
+                            return <td key={key} style={{ width: "10%" }}>{result}</td> 
+                        } 
                     })
                 }
                 
@@ -93,6 +98,14 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
         )
     }
 
+// "{
+//     "files":[
+//      {"name":"pipework dimensions.jpg","assetId":318520476,"isImage":"true","fileType":"ASSET","createdAt":1632380805310,"createdBy":"16250282"},
+//      {"name":"bfbc5cc3-17d9-4adf-967d-a02d930a6e0f.jpg","assetId":318520532,"isImage":"true","fileType":"ASSET","createdAt":1632380974118,"createdBy":"16250282"},
+//      {"name":"1ccba7f8-9117-4764-aaa6-514dc40cdfae.jpg","assetId":318520568,"isImage":"true","fileType":"ASSET","createdAt":1632380974112,"createdBy":"16250282"}
+//      ]
+// }"
+    
 
     function renderResults(){
         if(count === 0){
@@ -112,10 +125,12 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
                     <Content>
                         {
                             <Table styles={{ colors: "white" }}>
-                                <thead>
+                                <thead styles={{ position: "fixed", top: 0 }}>
                                     <tr>
                                         <th style={{ minWidth: "40px" }}>{"Name"}</th >
-                                        {Object.keys(titleBars).map((head, index) => <th key={index}>{head}</th>)}             
+                                        {
+                                            Object.keys(titleBars).map((head, index) => <th key={index}>{head}</th>)
+                                        }             
                                     </tr>
                                 </thead>
                                 <tbody>

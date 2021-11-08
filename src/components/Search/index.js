@@ -1,20 +1,26 @@
 import { useState } from 'react'
 import { EntrySearch, Input, InputWrapper, FilterButton } from "./style"
-import { FaSearch } from 'react-icons/fa'
+import { FaSearch, FaBackward } from 'react-icons/fa'
 import { searchCriterion } from "../../utils/data.placeholders"
 import { collective } from '../../utils/build.functions'
 
 export function Search({ 
     placeholder, inputRef, onTextChange, searchCount, totalCount, searchFilter, fetchCount,
-    setSearchFilter, checkEntries, queryText, setFilter, setPageNumber, pageNumber 
+    setSearchFilter, checkEntries, setIsSearch, setIsSearchCount
 }){
     const [dot, setDot] = useState("")
     const total = !totalCount ? `Loading${collective.renderDots({ dot, setDot })}`: totalCount
-    const _search = !searchCount ? `N/A` : searchCount
+    let _search = !searchCount ? `N/A` : searchCount
 
     function handleSearch(){
         checkEntries()
-        setPageNumber(1)
+        // setPageNumber(1)
+    }
+
+    function handleReturn() {
+        setIsSearch(prevState => !prevState)
+        inputRef.current.value = ''
+        setIsSearchCount(undefined)
     }
 
     function onFilter(){
@@ -29,6 +35,8 @@ export function Search({
         )
     }
 
+
+
     return(
         <EntrySearch>
             <InputWrapper>
@@ -36,8 +44,9 @@ export function Search({
                 <button onClick={handleSearch}><FaSearch size={"1.5em"} title="Search" /></button>
             </InputWrapper>
             <div>
-                <span>Source: {fetchCount} </span>
+                <span>Source: {fetchCount}</span>
                 <span>Available: {total}</span>
+                <span style={{ cursor:"pointer" }} onClick={handleReturn}><FaBackward size={"1.5em"} title="Back to Items" /></span>
                 <span>{onFilter()}</span>
                 <span>Search Results: {_search}</span>
             </div>

@@ -33,7 +33,6 @@ async function fetchItemCount({ setFetchCount }){
 async function fetchData({ page, setItems, setLoading, setError }){
     setLoading(true)
     setError(false)
-    let variables = {"page": page}
     await axios({
         method: "POST",
         url: _ENDPOINT,
@@ -43,14 +42,15 @@ async function fetchData({ page, setItems, setLoading, setError }){
         },
         data: JSON.stringify({
             "query": `{boards(ids: 1832485672) {items(limit: 10 page: ${page}){ name column_values{ id text title type value }}}}`,
-            'variables': JSON.stringify(variables)
-        })
+            
+        }),
     })
     .then((res) => {
+        setItems(prevItems => [...prevItems, ...res.data.data['boards'][0]["items"]])
         setLoading(false)
-        return setItems(prevItems => [...prevItems, ...res.data.data['boards'][0]["items"]])
     })
-    .catch((error) => { setError(true) ; console.log("error caught 404")})
+    .catch((error) => { setError(true) ; console.log("error caught 404"); setLoading(false)}) 
+
 }
 
 function getLocalStorage(){

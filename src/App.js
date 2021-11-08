@@ -12,7 +12,7 @@ function App() {
   const [pageNumber, setPageNumber] =  useState(1)
   const { items, count, fetchCount, loading, error } = useItemFetch(pageNumber)
 
-  // console.log({ items, count, fetchCount }, "app,js")
+  console.log({ items, count, fetchCount }, "app,js")
 
   const actions = {
     FILTER_TEXT: "SET_FILTER"
@@ -83,9 +83,9 @@ function App() {
           placeholder={searchCriterion[searchFilter]}
           inputRef={inputRef} 
           isSearch={isSearch}
+          setIsSearch={setIsSearch}
           setSearchFilter={setSearchFilter}
           searchFilter={searchFilter}
-          setIsSearch={setIsSearch}
           searchCount={searchCount}
           setIsSearchCount={setIsSearchCount}
           totalCount={count}
