@@ -24,7 +24,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   align-items: flex-start;
   // transform: rotateX(180deg);
   // border: 1px solid #4c8bf5;

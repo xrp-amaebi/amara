@@ -1,14 +1,18 @@
 import { useRef, useReducer, useState } from 'react';
-import { useEntriesContext } from './context/entries.context';
 import { Search } from './components/Search';
 import { Results } from './components/Results';
 import { Socials } from "./components/Socials";
 import { searchCriterion } from './utils/data.placeholders';
 
+import useItemFetch from './hooks/useItemFetch';
 import './App.css';
 
 function App() {
-  const { items, count } = useEntriesContext()
+  // const { items, count } = useEntriesContext()
+  const [pageNumber, setPageNumber] =  useState(1)
+  const { items, count, fetchCount, loading, error } = useItemFetch(pageNumber)
+
+  // console.log({ items, count, fetchCount }, "app,js")
 
   const actions = {
     FILTER_TEXT: "SET_FILTER"
@@ -41,16 +45,12 @@ function App() {
   const [filteredEntries, setFilteredEntries] = useState([])
   const [searchFilter, setSearchFilter] = useState("name")
 
-  
-  const [pageNumber, setPageNumber] =  useState(1)
-
   function selectEntries(_entries, { text }) {
     const saveCount = _entries.filter(link => link && link[searchFilter].toLowerCase().includes(text.toLowerCase()));
     setIsSearchCount(saveCount.length)
     setFilteredEntries(saveCount)
     return saveCount
   }
-
 
   function checkEntries() {
     if(count > 0) {
@@ -75,7 +75,6 @@ function App() {
     }
   }
 
-
   return (
     <div className="App">
       <div>
@@ -90,6 +89,7 @@ function App() {
           searchCount={searchCount}
           setIsSearchCount={setIsSearchCount}
           totalCount={count}
+          fetchCount={fetchCount}
           checkEntries={checkEntries}
           queryText={query}
           setFilter={setFilter}
@@ -97,8 +97,6 @@ function App() {
           setPageNumber={setPageNumber}
         />
       </div>
-      
-
       <Results
         entries={filteredEntries}
         items={items}
@@ -109,6 +107,8 @@ function App() {
         selectEntries={selectEntries}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
+        loading={loading}
+        error={error}
       />
       <Socials />
     </div>

@@ -2,37 +2,52 @@ import { useState } from 'react'
 import { EntrySearch, Input, InputWrapper, FilterButton } from "./style"
 import { FaSearch } from 'react-icons/fa'
 import { searchCriterion } from "../../utils/data.placeholders"
+import { collective } from '../../utils/build.functions'
 
-export function Search({ placeholder, inputRef, onTextChange, searchCount, totalCount, searchFilter, setSearchFilter, checkEntries, queryText, setFilter, setPageNumber }){
+export function Search({ 
+    placeholder, inputRef, onTextChange, searchCount, totalCount, searchFilter, fetchCount,
+    setSearchFilter, checkEntries, queryText, setFilter, setPageNumber, pageNumber 
+}){
     const [dot, setDot] = useState("")
-
-    const total = !totalCount ? `Loading${renderDots()}`: totalCount
-    const _search = !searchCount ? `Loading${renderDots()}` : searchCount
-
-
-    function renderDots(){
-        const count = dot.length
-        let extra = dot + "."
-        setTimeout(() => {
-            if(count === 3){
-                extra = "."
-                setDot(extra)
-                return
-            }
-            setDot(extra)
-        }, 1000)
-
-        return(
-            dot
-        )
-    }
+    const total = !totalCount ? `Loading${collective.renderDots({ dot, setDot })}`: totalCount
+    const _search = !searchCount ? `N/A` : searchCount
 
     function handleSearch(){
         checkEntries()
         setPageNumber(1)
     }
 
-    // const [pageNumber] =  useState(0)
+    function onFilter(){
+        return(
+            <div style={{ display: "flex" }}>
+                {
+                    Object.keys(searchCriterion).map((item, key) => {
+                        return <FilterButton _active={searchFilter === item ? true : false} key={key} onClick={() => setSearchFilter(item)}>{item}</FilterButton>
+                    })
+                }
+            </div>
+        )
+    }
+
+    return(
+        <EntrySearch>
+            <InputWrapper>
+                <Input placeholder={placeholder} ref={inputRef} onChange={onTextChange} />
+                <button onClick={handleSearch}><FaSearch size={"1.5em"} title="Search" /></button>
+            </InputWrapper>
+            <div>
+                <span>Source: {fetchCount} </span>
+                <span>Available: {total}</span>
+                <span>{onFilter()}</span>
+                <span>Search Results: {_search}</span>
+            </div>
+        </EntrySearch>
+    )
+}
+
+
+// filters
+// const [pageNumber] =  useState(0)
 
     // function displayQuery(){
     //     let limit = searchFilter.toLowerCase() === "link" ? 3 : 5
@@ -51,29 +66,3 @@ export function Search({ placeholder, inputRef, onTextChange, searchCount, total
     //         ))
     //     )
     // }
-
-    function onFilter(){
-        return(
-            <div style={{ display: "flex" }}>
-                {Object.keys(searchCriterion).map((item, key) => <FilterButton _active={searchFilter === item ? true : false} key={key} onClick={() => setSearchFilter(item)}>{item}</FilterButton>)}
-            </div>
-        )
-    }
-
-    return(
-        <EntrySearch>
-            <InputWrapper>
-                <Input placeholder={placeholder} ref={inputRef} onChange={onTextChange} />
-                <button onClick={handleSearch}><FaSearch size={"1.5em"} title="Search" /></button>
-            </InputWrapper>
-            {/* <div>
-                {displayQuery()}
-            </div> */}
-            <div>
-                <span>TotalItems: {total} </span>
-                <span>{onFilter()}</span>
-                <span>Search Results: {_search}</span>
-            </div>
-        </EntrySearch>
-    )
-}

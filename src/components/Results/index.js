@@ -1,35 +1,18 @@
-import {  useState } from "react";
+import {  useState, useRef, useCallback } from "react";
+import { collective } from "../../utils/build.functions"
 import { Container, InfoWrapper, Content, Table } from "./style"
 
-export function Results({ entries, items, isSearch, count, pageNumber, setPageNumber }){
-
-    let defaults = []
+export function Results({ entries, items=[], isSearch, count, setPageNumber, loading, error }){
     const [dot, setDot] = useState("")
-
-    function renderDots(){
-        const count = dot.length
-        let extra = dot + "."
-        setTimeout(() => {
-            if(count === 3){
-                extra = "."
-                setDot(extra)
-                return
-            }
-            setDot(extra)
-        }, 1000)
-
-        return(
-            <span>{dot}</span>
-        )
-    }
-
+    let defaults = []
     let titleBars = {}
 
     items.length > 0 && items[0].column_values.map((itemProps, key) => {
         const { value, title } = itemProps
 
         defaults.push({
-            value, title
+            value, 
+            title
         })
 
         items[0].column_values.map((subProps, index) => {
@@ -43,34 +26,72 @@ export function Results({ entries, items, isSearch, count, pageNumber, setPageNu
 
         return null
     })
-    
 
-    // function renderNameCard({ name, column_values }, key){
-    //     return <NameCard key={key} name={name} column_values={column_values} count={count} defaults={Object.keys(titleBars)} keyX={key}/> 
-    // }
 
-    function renderTableFunction({ link, key }){
-        const { column_values, name } = link
-
-        return (
-        <tr style={{ height:"20px" }} key={key}>
-            <td>{name}</td>
-            {
-                column_values && column_values.map((column, key) => {
-
-                    let result = (typeof(JSON.parse(column.value)) === "object") ? 
-                        column.value == null ? 
-                            "null" 
-                        : 
-                            "object values"
-                    :
-                        String(JSON.parse(column.value))
-
-                    return <td key={key} style={{ width: "10%" }}>{result}</td>
-                })
+    const observer = useRef()
+    const lastQueryElement = useCallback(node => {
+        if(loading) return
+        if(observer.current) observer.current.disconnect()
+        observer.current = new IntersectionObserver(watchables => {
+            const [instance] = watchables
+            if(instance.isIntersecting){
+                // console.log("visible", { watchables })
+                setPageNumber(prev => prev + 1)
             }
-        </tr>
-    )}
+        })
+        if(node) observer.current.observe(node)
+    }, [setPageNumber, loading])
+
+    function renderTableFunction({ link, key, size }){
+        const { column_values, name } = link
+        return (
+            (size === key+1 ) ?
+                <tr style={{ height:"20px" }} key={key} ref={lastQueryElement}>
+
+                    <td>{name}</td>
+                    {
+                        column_values && column_values.map((column, key) => {
+
+                            let result = (typeof(JSON.parse(column.value)) === "object") ? 
+                                column.value == null ? 
+                                    "null" 
+                                : 
+                                    "object values"
+                            :
+                                String(JSON.parse(column.value))
+                            ;
+
+                            
+                            return <td key={key} style={{ width: "10%" }}>{result}</td>
+                            
+                        })
+                    }
+                    
+                </tr>
+            :
+                <tr style={{ height:"20px" }} key={key}>
+
+                <td>{name}</td>
+                {
+                    column_values && column_values.map((column, key) => {
+
+                        let result = (typeof(JSON.parse(column.value)) === "object") ? 
+                            column.value == null ? 
+                                "null" 
+                            : 
+                                "object values"
+                        :
+                            String(JSON.parse(column.value))
+                        ;
+
+                        
+                        return <td key={key} style={{ width: "10%" }}>{result}</td>     
+                    })
+                }
+                
+            </tr>
+        )
+    }
 
 
     function renderResults(){
@@ -94,19 +115,21 @@ export function Results({ entries, items, isSearch, count, pageNumber, setPageNu
                                 <thead>
                                     <tr>
                                         <th style={{ minWidth: "40px" }}>{"Name"}</th >
-                                        {Object.keys(titleBars).map((head, index) => <th key={index}>{head}</th>) }             
+                                        {Object.keys(titleBars).map((head, index) => <th key={index}>{head}</th>)}             
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
                                         entries && isSearch ? 
-                                            entries && entries.map((link, index) => renderTableFunction({ link, key: index})) 
+                                            entries && entries.map((link, index) => renderTableFunction({ link, key: index, size: entries.length })) 
                                         : 
-                                            items && items.map((link, index) => renderTableFunction({ link, key: index }))
+                                            items && items.map((link, index) => renderTableFunction({ link, key: index, size: items.length }))
                                     }
                                 </tbody>
                             </Table>  
                         }
+                        <div style={{ color: "rgba(76, 139, 245, .6)", alignSelf: "center", fontSize: "10px" }}>{loading && `loading${collective.renderDots({ dot, setDot })}`}</div>
+                        <div style={{ color: "rgba(255, 13, 24, .6)", alignSelf: "center", fontSize: "10px" }}>{error && `Error Fetching latest items...`}</div>
                     </Content> 
                 </Container>
             )
@@ -122,6 +145,7 @@ export function Results({ entries, items, isSearch, count, pageNumber, setPageNu
 }
 
 // Pagination
+// const observer = useRef()
 // const lastQueryElement = useCallback(node => {
 //     if(loading) return
 //     if(queryRef.current) queryRef.current.disconnect()
