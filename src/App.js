@@ -8,11 +8,10 @@ import useItemFetch from './hooks/useItemFetch';
 import './App.css';
 
 function App() {
-  // const { items, count } = useEntriesContext()
   const [pageNumber, setPageNumber] =  useState(1)
   const { items, count, fetchCount, loading, error } = useItemFetch(pageNumber)
 
-  console.log({ items, count, fetchCount }, "app,js")
+  // console.log({ items, count, fetchCount }, "app,js")
 
   const actions = {
     FILTER_TEXT: "SET_FILTER"
@@ -77,7 +76,10 @@ function App() {
 
   return (
     <div className="App">
-      <div>
+      <div style={{ 
+        position: "fixed", top: 0, margin: "0px", background: "black",
+        border: "1px solid #4c8bf5", width: "100vw"
+      }}>
         <Search
           onTextChange={onTextChange}
           placeholder={searchCriterion[searchFilter]}
@@ -110,7 +112,9 @@ function App() {
         loading={loading}
         error={error}
       />
-      <Socials />
+      <div style={{ position: "fixed", bottom: 0,  width: "100vw"}}>
+        <Socials />
+      </div>
     </div>
   );
 }

@@ -4,13 +4,14 @@ let styles = {
     display: "flex", cursor: "pointer", 
     justifyContent: "space-around", 
     borderTop: "1px solid #4c8bf5", 
+    borderRight: "1px solid #4c8bf5", 
     padding: "12px",
-    position: "fixed",
+    // position: "fixed",
     bottom: 0,
     marginTop: "12px",
     backgroundColor: "rgba(0,0,0, .8)",
-    zIndex: 2,
-    width: "inherit"
+    // zIndex: 2,
+    // width: "50vw"
 
 }
 export function Socials() {

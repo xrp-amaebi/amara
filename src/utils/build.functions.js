@@ -1,5 +1,5 @@
 import axios from 'axios'
-export let collective = { setLocalStorage, getLocalStorage, fillLocalStorage, fetchData, fetchItemCount, renderDots }
+export let collective = { setLocalStorage, getLocalStorage, fillLocalStorage, fetchData, fetchItemCount, renderDots, fetchAssets}
 
 const _ENDPOINT = "https://api.monday.com/v2"
 
@@ -41,7 +41,7 @@ async function fetchData({ page, setItems, setLoading, setError }){
             "Authorization": "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjk5ODEwOTY1LCJ1aWQiOjE1MzUwNTMzLCJpYWQiOiIyMDIxLTAyLTE2VDEyOjE3OjQ1LjAwMFoiLCJwZXIiOiJtZTp3cml0ZSIsImFjdGlkIjo0MjU4MjgwLCJyZ24iOiJ1c2UxIn0.wrR7q2mQTPRJ8tOzSN2IVLDG81DJ_d-VxRkpSPSLZ2M"
         },
         data: JSON.stringify({
-            "query": `{boards(ids: 1832485672) {items(limit: 10 page: ${page}){ name column_values{ id text title type value }}}}`,
+            "query": `{ boards(ids: 1832485672) {items(limit: 50 page: ${page}){ name column_values{ id text title type value }  assets { id url name public_url  }}}}`,
             
         }),
     })
@@ -51,6 +51,25 @@ async function fetchData({ page, setItems, setLoading, setError }){
     })
     .catch((error) => { setError(true) ; console.log("error caught 404"); setLoading(false)}) 
 
+}
+
+async function fetchAssets({ setAssets }){
+    await axios ({
+        url: "https://api.monday.com/v2", 
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization' : 'eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjk5ODEwOTY1LCJ1aWQiOjE1MzUwNTMzLCJpYWQiOiIyMDIxLTAyLTE2VDEyOjE3OjQ1LjAwMFoiLCJwZXIiOiJtZTp3cml0ZSIsImFjdGlkIjo0MjU4MjgwLCJyZ24iOiJ1c2UxIn0.wrR7q2mQTPRJ8tOzSN2IVLDG81DJ_d-VxRkpSPSLZ2M'
+        },
+        data: JSON.stringify({
+            query : "query { assets (ids: [1832485672]) { id name url }}"
+        })
+    }).then(res => {
+        console.log({ res: res.data })
+        setAssets(res.data)
+    })
+  .catch(e => console.log({ e }))
+  ;
 }
 
 function getLocalStorage(){

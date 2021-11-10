@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   min-height: 100vh;
+  // min-width: 100%;
   padding: 12px;
   display: flex;
   flex-direction: column;
@@ -110,6 +111,12 @@ export const Table = styled.table`
   width: 100%;
   font-size: "10px";
 
+  thead {
+    position: relative;
+    width: inherit;
+    // text-transform: uppercase;
+  }
+
   td, th {
     // border: 1px solid #dddddd;
     border: 3px solid #4c8bf5;
@@ -117,6 +124,7 @@ export const Table = styled.table`
     padding: 12px;
     margin: 10px;
   }
+
 
   th {
     font-size: 12px;

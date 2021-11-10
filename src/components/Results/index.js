@@ -1,33 +1,46 @@
 import {  useState, useRef, useCallback } from "react";
 import { collective } from "../../utils/build.functions"
+import { Search } from "../Search";
 import { Container, InfoWrapper, Content, Table } from "./style"
 
 export function Results({ entries, items=[], isSearch, count, setPageNumber, loading, error }){
     const [dot, setDot] = useState("")
-    // let defaults = []
     let titleBars = {}
+    let subAssets = {}
 
-    items.length > 0 && items[0].column_values.map((itemProps, key) => {
-        const { value, title, type  } = itemProps
+    items.length > 0 && items[0].column_values.map((subProps, index) => {
 
-        // defaults.push({
-        //     value, 
-        //     title, 
-        //     type
-        // })
+        const { value: subValue, title: subTitle } = subProps
 
-        items[0].column_values.map((subProps, index) => {
+        titleBars[subTitle] = JSON.parse(subValue)
 
-            const { value: subValue, title: subTitle } = subProps
-
-            titleBars[subTitle] = JSON.parse(subValue)
-
-            return {}
-        })
-
-        return null
+        return {}
     })
 
+    items.length > 0 && items.map((item) => item.assets.map((file, index) => {
+        const { name } = item
+        subAssets[name] = item.assets
+        return {}
+    }))
+
+    function parseImg({ render, name }){
+        let _render = JSON.parse(render)
+        // _render["files"] === null && console.log({ _render })
+
+        if(_render["files"]) {
+            return JSON.parse(render)["files"].map((file, index) => {
+                return subAssets[name].map((asset, key)=> {
+                    // file.isImage === "true" && consolelog({ assetId: asset.id,  isImage: file.isImage, url: asset.public_url })
+                    return (file.isImage === "true") ?
+                        (asset.id === String(file.assetId)) && <img width="10px" height="10px" alt={asset.name} src={asset.url_thumbnail} key={key} /> 
+                    :
+                        <div style={{ margin: "4px", padding: "4px"}}key={`${key}-${index}`}>{`${asset.name}`}<br /></div>
+                }) 
+            })
+        } else {
+            return "null"
+        }
+    }
 
     const observer = useRef()
     const lastQueryElement = useCallback(node => {
@@ -45,6 +58,7 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
 
     function renderTableFunction({ link, key, size }){
         const { column_values, name } = link
+
         return (
             (size === key+1) ?
                 <tr style={{ height:"20px" }} key={key} ref={lastQueryElement}>
@@ -77,7 +91,7 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
                     column_values && column_values.map((column, key) => {
 
                         let result = (typeof(JSON.parse(column.value)) === "object") ? 
-                            column.value == null ? 
+                            column.value === null ? 
                                 "null" 
                             : 
                                 column.type === 'file' ? "files" : "object values"
@@ -86,14 +100,18 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
                         ;
 
                         if(result === "files") {
-                            const [file] = JSON.parse(column.value)["files"]
-                            return file.isImage && <td key={key} style={{ width: "10%" }}><img  alt={file.name} src={file.assetId} /></td> 
-                        }  else {
+                            return <td key={key} style={{ width: "10%" }}>
+                                <div>
+                                    {
+                                        parseImg({ render: column.value, name })
+                                    }
+                                </div>
+                            </td>
+                        } else {
                             return <td key={key} style={{ width: "10%" }}>{result}</td> 
                         } 
                     })
                 }
-                
             </tr>
         )
     }
@@ -111,6 +129,7 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
         if(count === 0){
             return(
                 <Container>
+                    <div style={{ width: "688px", height: "100px"}}> </div>
                     {
                         <InfoWrapper>
                             <span style={{ fontSize: "x-small" }}>{"No Results found ?"}</span><br /> 
@@ -122,6 +141,7 @@ export function Results({ entries, items=[], isSearch, count, setPageNumber, loa
         } else {
             return(
                 <Container>
+                    <div style={{ width: "688px", height: "100px"}}> </div>
                     <Content>
                         {
                             <Table styles={{ colors: "white" }}>

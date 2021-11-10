@@ -11,12 +11,14 @@ export default function useItemFetch(page){
 
     useEffect(() => {
         fetchData({ page, setItems, setLoading, setError })
+        
         return () => console.log("console cleared!")
     }, [page])
 
     useEffect(() => {
         fetchItemCount({ setFetchCount })
-    }, [])
+       
+    })
 
     // console.log({ fetchCount })
     return { items, count: items.length, fetchCount, loading, error }
